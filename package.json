@@ -1,0 +1,11 @@
+{
+  "name": "bitflyer",
+  "version": "0.0.1",
+  "description": "💥",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "request": "^2.88.2"
+  }
+}
