@@ -1,3 +1,6 @@
 node_modules
 
 credentials.json
+orders
+executions
+positions.yaml

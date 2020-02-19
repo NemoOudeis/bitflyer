@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "crypto": "^1.0.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "yaml": "^1.7.2"
   }
 }
