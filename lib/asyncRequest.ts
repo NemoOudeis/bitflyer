@@ -6,7 +6,12 @@ export const request = <ParsedType>(opts): Promise<ParsedType> => {
             if (err) {
                 reject(err)
             } else {
-                resolve(JSON.parse(body) as ParsedType)
+                try {
+                    resolve(JSON.parse(body) as ParsedType)
+                } catch (e) {
+                    console.log(`Failed to parse response for ${opts.url}`)
+                    reject(e)
+                }
             }
       })
     })
