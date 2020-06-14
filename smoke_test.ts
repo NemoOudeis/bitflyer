@@ -1,4 +1,4 @@
-// import { BitFlyer } from './jslib';
+// import { BitFlyer } from './dist';
 import { BitFlyer } from './index';
 
 import * as credentials from './credentials.json';

@@ -1,13 +1,8 @@
 import { request as http } from './asyncRequest';
-import * as crypto from 'crypto';
 import { Health, Market, Board, Ticker, Execution, Chat, Balance } from './types';
+import { requestBuilder, Credentials, HttpMethod } from './requestBuilder';
 
-interface Credentials {
-    secret: string;
-    key: string;
-}
-
-interface Pagination {
+export interface Pagination {
     count?: number;
     before?: string;
     after?: string;
@@ -20,71 +15,50 @@ export class BitFlyer {
         this.credentials = credentials;
     }
 
-    private request = (method: string, path: string, urlParams: any = {}, body?: any) => {
-        const timestamp = Date.now().toString();
-        const jsonBody = body ? JSON.stringify(body) : '';
-        const query = Object.entries(urlParams)
-            .map((it) => `${it[0]}=${it[1]}`)
-            .join('&');
-        const pathAndQuery = `${path}${query ? '?' : ''}${query}`;
-
-        const text = timestamp + method + pathAndQuery + jsonBody;
-        const sign = crypto.createHmac('sha256', this.credentials.secret).update(text).digest('hex');
-
-        return {
-            url: `https://api.bitflyer.com${pathAndQuery}`,
-            method: method,
-            headers: {
-                'ACCESS-KEY': this.credentials.key,
-                'ACCESS-TIMESTAMP': timestamp,
-                'ACCESS-SIGN': sign,
-                'Content-Type': 'application/json',
-            },
-            body: jsonBody,
-        };
-    };
+    private request = (method: HttpMethod, path: string, urlParams: any = {}, body?: any) =>
+        requestBuilder(this.credentials, method, path, urlParams, body);
 
     // Public APIs
 
     /** @see https://lightning.bitflyer.com/docs?lang=en#market-list */
     markets(region = ''): Promise<Market[]> {
-        return http(this.request('GET', `/v1/markets/${region}`));
+        return http(this.request(HttpMethod.Get, `/v1/markets/${region}`));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#market-list */
     getMarkets(region = ''): Promise<Market[]> {
-        return http(this.request('GET', `/v1/getmarkets/${region}`));
+        return http(this.request(HttpMethod.Get, `/v1/getmarkets/${region}`));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#order-book */
     board(product_code?: string): Promise<Board> {
-        return http(this.request('GET', `/v1/board`, { product_code }));
+        return http(this.request(HttpMethod.Get, `/v1/board`, { product_code }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#order-book */
     getBoard(product_code?: string): Promise<Board> {
-        return http(this.request('GET', '/v1/getboard', { product_code }));
+        return http(this.request(HttpMethod.Get, '/v1/getboard', { product_code }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#ticker */
     ticker(product_code?: string): Promise<Ticker> {
-        return http(this.request('GET', '/v1/ticker', { product_code }));
+        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#ticker */
     getTicker(product_code?: string): Promise<Ticker> {
-        return http(this.request('GET', '/v1/ticker', { product_code }));
+        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#execution-history */
     executions(product_code?: string, pagination?: Pagination): Promise<Execution[]> {
-        return http(this.request('GET', '/v1/ticker', { product_code, ...(pagination || {}) }));
+        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code, ...(pagination || {}) }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#execution-history */
     getExecutions(product_code?: string, pagination?: Pagination): Promise<Execution[]> {
-        return http(this.request('GET', '/v1/ticker', { product_code, ...(pagination || {}) }));
+        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code, ...(pagination || {}) }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#chat */
     getChats(region = '', from_date?: string): Promise<Chat[]> {
-        return http(this.request('GET', `/v1/getchats/${region}`, { from_date }));
+        return http(this.request(HttpMethod.Get, `/v1/getchats/${region}`, { from_date }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#exchange-status */
     getHealth(product_code?: string): Promise<Health> {
-        return http(this.request('GET', '/v1/gethealth', { product_code }));
+        return http(this.request(HttpMethod.Get, '/v1/gethealth', { product_code }));
     }
 
     // Private APIs
@@ -104,6 +78,6 @@ export class BitFlyer {
     // marginStatus = () => http(this.request('GET', '/v1/me/getcollateral'))
     // permissions = () => http(this.request('GET', '/v1/me/getpermissions'))
 
-    balance = (): Promise<Balance[]> => http(this.request('GET', '/v1/me/getbalance'));
-    orders = (): Promise<any[]> => http(this.request('GET', '/v1/me/getchildorders'));
+    balance = (): Promise<Balance[]> => http(this.request(HttpMethod.Get, '/v1/me/getbalance'));
+    orders = (): Promise<any[]> => http(this.request(HttpMethod.Get, '/v1/me/getchildorders'));
 }

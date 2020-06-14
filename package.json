@@ -5,9 +5,10 @@
   "homepage": "https://github.com/NemoOudeis/bitflyer",
   "license": "Apache-2.0",
   "author": "Nemo Oudeis",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "jslib/**/*"
+    "dist/**/*"
   ],
   "private": false,
   "repository": {
@@ -19,25 +20,32 @@
   },
   "scripts": {
     "smoke": "ts-node smoke_test.ts",
+    "clean": "rm -rf dist",
     "build": "tsc",
-    "prepare": "yarn clean && yarn build",
-    "postpublish": "yarn clean",
-    "clean": "rm -rf jslib",
+    "test": "jest --config jestconfig.json",
     "lint": "yarn eslint . --ext .ts",
-    "format": "yarn prettier --write \"lib/**/*.ts\" \"index.ts\""
+    "format": "yarn prettier --write \"lib/**/*.ts\" \"index.ts\"",
+    "prepare": "yarn clean && yarn format && yarn build",
+    "prepublishOnly" : "yarn test && yarn lint",
+    "postpublish": "yarn clean",
+    "version" : "yarn format && git add -A lib",
+    "postversion" : "git push && git push --tags"
   },
   "dependencies": {
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "typescript": "^3.9.2",
+    "@types/jest": "^26.0.0",
     "@types/node": "^14.0.1",
     "@types/request": "^2.48.5",
     "@typescript-eslint/eslint-plugin": "^3.2.0",
     "@typescript-eslint/parser": "^3.2.0",
-    "prettier": "^2.0.5",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "ts-node": "^8.10.1"
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2"
   }
 }

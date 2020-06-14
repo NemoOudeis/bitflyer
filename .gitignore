@@ -1,5 +1,5 @@
 node_modules
-jslib
+dist
 
 credentials.json
 orders
