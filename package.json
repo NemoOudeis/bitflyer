@@ -22,15 +22,22 @@
     "build": "tsc",
     "prepare": "yarn clean && yarn build",
     "postpublish": "yarn clean",
-    "clean": "rm -rf jslib"
+    "clean": "rm -rf jslib",
+    "lint": "yarn eslint . --ext .ts",
+    "format": "yarn prettier --write \"lib/**/*.ts\" \"index.ts\""
   },
   "dependencies": {
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "typescript": "^3.9.2",
     "@types/node": "^14.0.1",
     "@types/request": "^2.48.5",
-    "ts-node": "^8.10.1",
-    "typescript": "^3.9.2"
+    "@typescript-eslint/eslint-plugin": "^3.2.0",
+    "@typescript-eslint/parser": "^3.2.0",
+    "prettier": "^2.0.5",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "ts-node": "^8.10.1"
   }
 }
