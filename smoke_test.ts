@@ -1,4 +1,5 @@
-import { BitFlyer } from '.';
+// import { BitFlyer } from './jslib';
+import { BitFlyer } from './index';
 
 import * as credentials from './credentials.json';
 
@@ -19,16 +20,27 @@ const bitflyer = new BitFlyer(credentials)
 // }
 
 const allPublic = async () => {
-    await bitflyer.getHealth()
-    await bitflyer.markets()
-    await bitflyer.getMarkets()
-    await bitflyer.board()
-    await bitflyer.getBoard()
-    await bitflyer.ticker()
-    await bitflyer.getTicker()
-    await bitflyer.executions()
-    await bitflyer.getExecutions()
-    await bitflyer.getChats()
+    const health = await bitflyer.getHealth()
+    console.log(health)
+    const markets = await bitflyer.markets()
+    console.log(markets)
+    const board = await bitflyer.board()
+    console.log(board)
+    const ticker = await bitflyer.ticker()
+    console.log(ticker)
+    const executions = await bitflyer.executions()
+    console.log(executions)
+
+    // await bitflyer.getHealth()
+    // await bitflyer.markets()
+    // await bitflyer.getMarkets()
+    // await bitflyer.board()
+    // await bitflyer.getBoard()
+    // await bitflyer.ticker()
+    // await bitflyer.getTicker()
+    // await bitflyer.executions()
+    // await bitflyer.getExecutions()
+    // await bitflyer.getChats()
 }
 
 allPublic()

@@ -4,9 +4,10 @@
   "description": "Bindings for Bitflyer Lightning API https://lightning.bitflyer.com/docs",
   "homepage": "https://github.com/NemoOudeis/bitflyer",
   "license": "Apache-2.0",
+  "author": "Nemo Oudeis",
   "main": "index.ts",
   "files": [
-    "lib/**/*"
+    "jslib/**/*"
   ],
   "private": false,
   "repository": {
@@ -17,7 +18,11 @@
     "node": ">=13.9.0"
   },
   "scripts": {
-    "smoke": "ts-node smoke_test.ts"
+    "smoke": "ts-node smoke_test.ts",
+    "build": "tsc",
+    "prepare": "yarn clean && yarn build",
+    "postpublish": "yarn clean",
+    "clean": "rm -rf jslib"
   },
   "dependencies": {
     "request": "^2.88.2"
