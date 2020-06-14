@@ -1,6 +1,6 @@
 # TypeScript Bindings for [BitFlyer Lightning API](https://lightning.bitflyer.com/docs?lang=en)
 
-Get started quickly with scripting BitFlyer's API
+Get started quickly with scripting BitFlyer's API.
 
 **Step 1**: Install package
 
@@ -9,31 +9,22 @@ yarn add bitflyer-api
 npm i bitflyer-api
 ```
 
-**Step 2**: Configure credentials (get them from [the developer page](https://lightning.bitflyer.com/)).
-
-```json
-// credentials.json
-{
-    "key": "my key",
-    "secret": "my secret"
-}
-```
-
-**Step 3**: Connect to the BitFlyer API
+**Step 2**: Connect to the BitFlyer API 🎉
 
 ```typescript
 // index.ts
-import { Bitflyer } from './lib/bitflyer';
-import * as credentials from './credentials.json';
+import { Bitflyer } from 'bitflyer-api';
+
+const credentials = { // get your credentials here https://lightning.bitflyer.com/developer
+    key: "my key",
+    secret: "my secret"
+}
 
 const bitflyer = new Bitflyer(credentials)
 
 const allPublic = async () => {
     const health = await bitflyer.getHealth()
-    const markets = await bitflyer.markets()
-    const board = await bitflyer.board()
-    const ticker = await bitflyer.ticker()
-    const executions = await bitflyer.executions()
+    console.log(health)
 }
 ```
 
