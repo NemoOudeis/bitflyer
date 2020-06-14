@@ -1,6 +1,6 @@
 {
   "name": "bitflyer-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bindings for Bitflyer Lightning API https://lightning.bitflyer.com/docs",
   "homepage": "https://github.com/NemoOudeis/bitflyer",
   "license": "Apache-2.0",
@@ -26,10 +26,10 @@
     "lint": "yarn eslint . --ext .ts",
     "format": "yarn prettier --write \"lib/**/*.ts\" \"index.ts\"",
     "prepare": "yarn clean && yarn format && yarn build",
-    "prepublishOnly" : "yarn test && yarn lint",
+    "prepublishOnly": "yarn test && yarn lint",
     "postpublish": "yarn clean",
-    "version" : "yarn format && git add -A lib",
-    "postversion" : "git push && git push --tags"
+    "version": "yarn format && git add -A lib",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "request": "^2.88.2"
