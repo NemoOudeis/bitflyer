@@ -1,15 +1,23 @@
 {
-  "name": "bitflyer",
+  "name": "bitflyer-api",
   "version": "0.1.0",
-  "description": "💥",
+  "description": "Bindings for Bitflyer Lightning API https://lightning.bitflyer.com/docs",
+  "homepage": "https://github.com/NemoOudeis/bitflyer",
+  "license": "Apache-2.0",
   "main": "index.ts",
   "files": [
-    "index.ts",
     "lib/**/*"
   ],
-  "private": true,
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NemoOudeis/bitflyer"
+  },
+  "engines": {
+    "node": ">=13.9.0"
+  },
   "scripts": {
-    "it": "ts-node ."
+    "smoke": "ts-node smoke_test.ts"
   },
   "dependencies": {
     "request": "^2.88.2"

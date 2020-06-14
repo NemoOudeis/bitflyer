@@ -13,7 +13,7 @@ interface Pagination {
     after?: string
 }
 
-export class Bitflyer {
+export class BitFlyer {
     private credentials: Credentials
 
     constructor(credentials: Credentials) {
@@ -88,17 +88,17 @@ export class Bitflyer {
     // Private APIs
 
 
-    buyBtc = (price, amount, side = 'BUY', type = 'LIMIT') => {
-        const opts = this.request('POST', '/v1/me/sendchildorder', {
-            product_code: 'BTC_JPY',
-            child_order_type: type,
-            side: side,
-            price: price,
-            size: amount
-        })
+    // buyBtc = (price, amount, side = 'BUY', type = 'LIMIT') => {
+    //     const opts = this.request('POST', '/v1/me/sendchildorder', {
+    //         product_code: 'BTC_JPY',
+    //         child_order_type: type,
+    //         side: side,
+    //         price: price,
+    //         size: amount
+    //     })
     
-        return http(opts)
-    }
+    //     return http(opts)
+    // }
 
     marginStatus = () => http(this.request('GET', '/v1/me/getcollateral'))
     permissions = () => http(this.request('GET', '/v1/me/getpermissions'))

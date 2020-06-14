@@ -1,15 +1,14 @@
-import * as orignialRequest from 'request';
+import * as _request from 'request';
 
-export const request = <ParsedType>(opts): Promise<ParsedType> => {
+export const request = <ParsedType>(opts: _request.CoreOptions & _request.RequiredUriUrl): Promise<ParsedType> => {
     return new Promise((resolve, reject) => {
-        orignialRequest(opts, (err, _, body) => {
+        _request.default(opts, (err: any, _: _request.Response, body: any) => {
             if (err) {
                 reject(err)
             } else {
                 try {
                     resolve(JSON.parse(body) as ParsedType)
                 } catch (e) {
-                    console.log(`Failed to parse response for ${opts.url}`)
                     reject(e)
                 }
             }
