@@ -42,15 +42,15 @@ export class BitFlyer {
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#ticker */
     getTicker(product_code?: string): Promise<Ticker> {
-        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code }));
+        return http(this.request(HttpMethod.Get, '/v1/getticker', { product_code }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#execution-history */
     executions(product_code?: string, pagination?: Pagination): Promise<Execution[]> {
-        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code, ...(pagination || {}) }));
+        return http(this.request(HttpMethod.Get, '/v1/executions', { product_code, ...(pagination || {}) }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#execution-history */
     getExecutions(product_code?: string, pagination?: Pagination): Promise<Execution[]> {
-        return http(this.request(HttpMethod.Get, '/v1/ticker', { product_code, ...(pagination || {}) }));
+        return http(this.request(HttpMethod.Get, '/v1/getexecutions', { product_code, ...(pagination || {}) }));
     }
     /** @see https://lightning.bitflyer.com/docs?lang=en#chat */
     getChats(region = '', from_date?: string): Promise<Chat[]> {
