@@ -1,5 +1,5 @@
 import { request as http } from './asyncRequest';
-import { Health, Market, Board, Ticker, Execution, Chat, Balance } from './types';
+import { Health, Market, Board, Ticker, Execution, Chat, Balance, Collateral, Address, CoinIn, CoinOut } from './types';
 import { requestBuilder, Credentials, HttpMethod } from './requestBuilder';
 
 export interface Pagination {
@@ -63,6 +63,36 @@ export class BitFlyer {
 
     // Private APIs
 
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-api-key-permissions */
+    getPermissions(): Promise<string[]> {
+        return http(this.request(HttpMethod.Get, '/v1/me/getpermissions'));
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-account-asset-balance */
+    getBalance(): Promise<Balance[]> {
+        return http(this.request(HttpMethod.Get, '/v1/me/getbalance'));
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-margin-status */
+    getCollateral(): Promise<Collateral> {
+        return http(this.request(HttpMethod.Get, '/v1/me/getcollateral'));
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-crypto-assets-deposit-addresses */
+    getAddresses(): Promise<Address[]> {
+        return http(this.request(HttpMethod.Get, '/v1/me/getaddresses'));
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-crypto-assets-deposit-addresses */
+    getCoinIns(pagination: Pagination = {}): Promise<CoinIn[]> {
+        return http(this.request(HttpMethod.Get, '/v1/me/getcoinins', pagination));
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-crypto-assets-transaction-history */
+    getCoinOuts(pagination: Pagination = {}): Promise<CoinOut[]> {
+        return http(this.request(HttpMethod.Get, '/v1/me/getcoinouts', pagination));
+    }
+
     // buyBtc = (price, amount, side = 'BUY', type = 'LIMIT') => {
     //     const opts = this.request('POST', '/v1/me/sendchildorder', {
     //         product_code: 'BTC_JPY',
@@ -76,8 +106,6 @@ export class BitFlyer {
     // }
 
     // marginStatus = () => http(this.request('GET', '/v1/me/getcollateral'))
-    // permissions = () => http(this.request('GET', '/v1/me/getpermissions'))
 
-    balance = (): Promise<Balance[]> => http(this.request(HttpMethod.Get, '/v1/me/getbalance'));
-    orders = (): Promise<any[]> => http(this.request(HttpMethod.Get, '/v1/me/getchildorders'));
+    // orders = (): Promise<any[]> => http(this.request(HttpMethod.Get, '/v1/me/getchildorders'));
 }

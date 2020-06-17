@@ -54,3 +54,43 @@ export interface Execution {
 export interface Health {
     status: string;
 }
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#get-margin-status */
+export interface Collateral {
+    collateral: number;
+    open_position_pnl: number;
+    require_collateral: number;
+    keep_rate: number;
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#get-crypto-assets-deposit-addresses */
+export interface Address {
+    type: string;
+    currency_code: string;
+    address: string;
+}
+
+export enum CoinInStatus {
+    Pending = 'PENDING',
+    Completed = 'COMPLETED',
+}
+
+interface CoinTransaction {
+    id: number;
+    order_id: string;
+    currency_code: string;
+    amount: number;
+    address: string;
+    tx_hash: string;
+    status: CoinInStatus;
+    event_date: string;
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#get-crypto-assets-deposit-history */
+export type CoinIn = CoinTransaction;
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#get-crypto-assets-transaction-history */
+export interface CoinOut extends CoinTransaction {
+    fee: number;
+    additional_fee: number;
+}
