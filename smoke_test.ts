@@ -30,7 +30,10 @@ const allPublic = async () => {
     // console.log(await bitflyer.getCollateral())
     // console.log(await bitflyer.getAddresses())
     // console.log(await bitflyer.getCoinIns())
-    console.log(await bitflyer.getCoinOuts())
+    // console.log(await bitflyer.getCoinOuts())
+    // console.log(await bitflyer.getBankAccounts())
+    // console.log(await bitflyer.getDeposits())
+    console.log(await bitflyer.getWithdrawals())
 }
 
 allPublic()
