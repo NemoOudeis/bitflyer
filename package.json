@@ -1,6 +1,6 @@
 {
   "name": "bitflyer-api",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Bindings for Bitflyer Lightning API https://lightning.bitflyer.com/docs",
   "homepage": "https://github.com/NemoOudeis/bitflyer",
   "license": "Apache-2.0",
