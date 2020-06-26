@@ -127,7 +127,7 @@ export interface WithdrawResponse {
 /** @see https://lightning.bitflyer.com/docs?lang=en#get-deposit-cancellation-history */
 export type Withdrawal = Transaction;
 
-export enum OrderType {
+export enum ChildOrderType {
     Limit = 'LIMIT',
     Market = 'MARKET',
 }
@@ -144,16 +144,155 @@ export enum OrderTimeInForce {
 }
 
 /** @see https://lightning.bitflyer.com/docs?lang=en#send-a-new-order */
-export interface OrderRequest {
+export interface ChildOrderRequest {
     product_code: string;
-    child_order_type: OrderType;
+    child_order_type: ChildOrderType;
     side: OrderSide;
-    price?: number;
     size: number;
-    minute_to_expire: number;
-    time_in_force: OrderTimeInForce;
+    price?: number;
+    minute_to_expire?: number;
+    time_in_force?: OrderTimeInForce;
 }
 
 export interface ChildOrderResponse {
+    child_order_acceptance_id: string;
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#cancel-order */
+export type CancelChildOrderRequest = CancelChildOrderByIdRequest | CancelChildOrderByAcceptanceIdRequest;
+
+export interface CancelChildOrderByIdRequest {
+    product_code: string;
+    child_order_id: string;
+}
+export interface CancelChildOrderByAcceptanceIdRequest {
+    product_code: string;
+    child_order_acceptance_id: string;
+}
+
+export enum ParentOrderMethod {
+    SIMPLE = 'SIMPLE',
+    IFD = 'IFD',
+    OCO = 'OCO',
+    IFDOCO = 'IFDOCO',
+}
+
+export enum ParentOrderType {
+    Limit = 'LIMIT',
+    Market = 'MARKET',
+    Stop = 'STOP',
+    StopLimit = 'STOP_LIMIT',
+    Trail = 'TRAIL',
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#submit-new-parent-order-special-order */
+export interface ParentOrderParameter {
+    product_code: string;
+    condition_type: ParentOrderType;
+    side: OrderSide;
+    size: number;
+    price?: number;
+    trigger_price?: number;
+    offset?: number;
+}
+
+export interface ParentOrderRequest {
+    order_method: ParentOrderMethod;
+    minute_to_expire?: number;
+    time_in_force?: OrderTimeInForce;
+    parameters: ParentOrderParameter[];
+}
+
+export interface ParentOrderResponse {
+    parent_order_acceptance_id: string;
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#cancel-parent-order */
+export type CancelParentOrderRequest = CancelParentOrderByAcceptanceIdRequest | CancelParentOrderByIdRequest;
+
+export interface CancelParentOrderByIdRequest {
+    product_code: string;
+    parent_order_id: string;
+}
+export interface CancelParentOrderByAcceptanceIdRequest {
+    product_code: string;
+    parent_order_acceptance_id: string;
+}
+
+export enum OrderStatus {
+    Active = 'ACTIVE',
+    Completed = 'COMPLETED',
+    Canceld = 'CANCELED',
+    Expired = 'EXPIRED',
+    Rejected = 'REJECTED',
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#list-orders */
+export interface ListChildOrdersRequest {
+    product_code: string;
+    child_order_state?: OrderStatus;
+    child_order_id?: string;
+    child_order_acceptance_id?: string;
+    parent_order_id?: string;
+}
+
+export interface ChildOrder {
+    id: number;
+    child_order_id: string;
+    product_code: string;
+    side: OrderSide;
+    child_order_type: ChildOrderType;
+    price: number;
+    average_price: number;
+    size: number;
+    child_order_state: OrderStatus;
+    expire_date: string;
+    child_order_date: string;
+    child_order_acceptance_id: string;
+    outstanding_size: number;
+    cancel_size: number;
+    executed_size: number;
+    total_commission: number;
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#get-parent-order-details */
+export interface ParentOrderDetail {
+    id: number;
+    parent_order_id: string;
+    order_method: ParentOrderMethod;
+    expire_date: number;
+    parent_order_acceptance_id: string;
+    parameters: ParentOrderParameter[];
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#list-parent-orders */
+export interface ParentOrder {
+    id: number;
+    parent_order_id: string;
+    product_code: string;
+    side: OrderSide;
+    parent_order_type: ParentOrderType;
+    price: number;
+    average_price: number;
+    size: number;
+    parent_order_state: OrderStatus;
+    expire_date: string;
+    parent_order_date: string;
+    parent_order_acceptance_id: string;
+    outstanding_size: number;
+    cancel_size: number;
+    executed_size: number;
+    total_commission: number;
+}
+
+/** @see https://lightning.bitflyer.com/docs?lang=en#list-executions */
+export interface MyExecution {
+    id: number;
+    child_order_id: string;
+    side: OrderSide;
+    price: number;
+    size: number;
+    commission: number;
+    exec_date: string;
     child_order_acceptance_id: string;
 }

@@ -16,8 +16,18 @@ import {
     WithdrawRequest,
     WithdrawResponse,
     Withdrawal,
-    OrderRequest,
     ChildOrderResponse,
+    ChildOrderRequest,
+    ParentOrderRequest,
+    ParentOrderResponse,
+    CancelChildOrderRequest,
+    CancelParentOrderRequest,
+    ParentOrder,
+    ChildOrder,
+    ListChildOrdersRequest,
+    ParentOrderDetail,
+    OrderStatus,
+    MyExecution,
 } from './types';
 import { requestBuilder, Credentials, HttpMethod } from './requestBuilder';
 
@@ -142,8 +152,68 @@ export class BitFlyer {
     }
 
     /** @see https://lightning.bitflyer.com/docs?lang=en#send-a-new-order */
-    sendChildOrder(orderRequest: OrderRequest): Promise<ChildOrderResponse> {
+    sendChildOrder(orderRequest: ChildOrderRequest): Promise<ChildOrderResponse> {
         return this.request(HttpMethod.Post, '/v1/me/sendchildorder', {}, orderRequest);
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#cancel-order */
+    cancelChildOrder(cancelRequest: CancelChildOrderRequest): Promise<void> {
+        return this.request(HttpMethod.Post, '/v1/me/cancelchildorder', {}, cancelRequest);
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#submit-new-parent-order-special-order */
+    sendParentOrder(orderRequest: ParentOrderRequest): Promise<ParentOrderResponse> {
+        return this.request(HttpMethod.Post, '/v1/me/sendparentorder', {}, orderRequest);
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#cancel-parent-order */
+    cancelParentOrder(cancelRequest: CancelParentOrderRequest): Promise<void> {
+        return this.request(HttpMethod.Post, '/v1/me/cancelparentorder', {}, cancelRequest);
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#cancel-all-orders */
+    cancelAllChildOrders(product_code: string): Promise<void> {
+        return this.request(HttpMethod.Post, '/v1/me/cancelallchildorders', {}, { product_code });
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#list-orders */
+    getChildOrders(listRequest: ListChildOrdersRequest, pagination: Pagination = {}): Promise<ChildOrder[]> {
+        return this.request(HttpMethod.Get, '/v1/me/getchildorders', { ...listRequest, ...pagination });
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#get-parent-order-details */
+    getParentOrder(
+        parentOrderId: { parent_order_id: string } | { parent_order_acceptance_id: string },
+    ): Promise<ParentOrderDetail> {
+        return this.request(HttpMethod.Get, '/v1/me/getparentorder', parentOrderId);
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#list-parent-orders */
+    getParentOrders(
+        product_code: string,
+        child_order_state?: OrderStatus,
+        pagination: Pagination = {},
+    ): Promise<ParentOrder[]> {
+        return this.request(HttpMethod.Get, '/v1/me/getparentorders', {
+            product_code,
+            child_order_state,
+            ...pagination,
+        });
+    }
+
+    /** @see https://lightning.bitflyer.com/docs?lang=en#list-executions */
+    getMyExecutions(
+        product_code: string,
+        child_order_id?: string,
+        child_order_acceptance_id?: string,
+        pagination: Pagination = {},
+    ): Promise<MyExecution[]> {
+        return this.request(HttpMethod.Get, '/v1/me/getexecutions', {
+            product_code,
+            child_order_id,
+            child_order_acceptance_id,
+            ...pagination,
+        });
     }
 
     // buyBtc = (price, amount, side = 'BUY', type = 'LIMIT') => {

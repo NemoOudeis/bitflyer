@@ -33,7 +33,11 @@ const allPublic = async () => {
     // console.log(await bitflyer.getCoinOuts())
     // console.log(await bitflyer.getBankAccounts())
     // console.log(await bitflyer.getDeposits())
-    console.log(await bitflyer.getWithdrawals())
+    // console.log(await bitflyer.getWithdrawals())
+    // console.log(await bitflyer.getChildOrders({
+    //     product_code: 'BTC_JPY'
+    // }))
+    console.log(await bitflyer.getMyExecutions('BTC_JPY', null, null, {}))
 }
 
 allPublic()
